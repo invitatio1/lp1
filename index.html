@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My dating profile- let's connect</title>
+    <style>
+        /* --- VARIABEL WARNA (TEMA PINK/ROSE) --- */
+        :root {
+            /* Warna Background Halaman */
+            --bg-body: #FCE4EC; 
+            /* Warna Utama Tombol (Merah/Pink Tua) */
+            --primary-color: #D81B60; 
+            /* Warna Hover (Lebih Gelap) */
+            --hover-color: #AD1457;
+            /* Warna Teks Utama */
+            --text-main: #333;
+            /* Warna Teks Sekunder */
+            --text-sec: #777;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 20px 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* --- HEADER PROFILE --- */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-pic-wrapper {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            background: #fff;
+        }
+
+        .profile-pic-wrapper:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sec);
+            font-weight: 600;
+        }
+
+        /* --- CARDS STYLE (Kotak Putih) --- */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* --- ABOUT ME (TAGS) --- */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: #f8bbd0; /* Pink Muda */
+            color: #880e4f;      /* Pink Tua */
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* --- CONNECT WITH ME (LIST) --- */
+        .connect-list {
+            list-style: none;
+        }
+
+        .connect-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .connect-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Hover Effect List */
+        .connect-item:hover {
+            color: var(--primary-color);
+            padding-left: 5px; /* Geser sedikit ke kanan */
+        }
+
+        .connect-item span {
+            font-size: 1.2rem;
+        }
+
+        /* --- IDEAL FIRST DATE --- */
+        .date-quote {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* --- MAIN BUTTON (FOOTER) --- */
+        .main-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .main-btn:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #999;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header Profile -->
+        <div class="header">
+            <!-- Foto Klik Redirect -->
+            <div class="profile-pic-wrapper" onclick="redirectUser()">
+                <img id="randomProfileImg" src="" alt="Amber" class="profile-pic">
+            </div>
+            <h1>Hi, I'm Amber!</h1>
+            <div class="subtitle">COFFEE LOVER · TRAVELER · DOG PARENT</div>
+        </div>
+
+        <!-- Card 1: About Me -->
+        <div class="card">
+            <h2>About Me</h2>
+            <div class="tags-container">
+                <span class="tag">INTJ</span>
+                <span class="tag">Sushi Addict</span>
+                <span class="tag">Netflix Binger</span>
+                <span class="tag">Beach Lover</span>
+            </div>
+        </div>
+
+        <!-- Card 2: Connect With Me -->
+        <div class="card">
+            <h2>Connect With Me</h2>
+            <div class="connect-list">
+                <!-- Item List Klik Redirect -->
+                <div class="connect-item" onclick="redirectUser()">
+                    My Daily Life <span>➜</span>
+                </div>
+                <div class="connect-item" onclick="redirectUser()">
+                    Call Me <span>📞</span>
+                </div>
+                <div class="connect-item" onclick="redirectUser()">
+                    Slide into my DMs <span>💬</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Ideal First Date -->
+        <div class="card">
+            <h2>Ideal First Date</h2>
+            <p class="date-quote">
+                "Sunset at the beach followed by late night tacos"
+            </p>
+        </div>
+
+        <!-- Main CTA Button -->
+        <button class="main-btn" onclick="redirectUser()">
+            Send Some Love ❤️
+        </button>
+
+        <div class="copyright">
+            © 2024 Amber Profile
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        // --- 1. Random Photo (5 Foto) ---
+        const photoList = [
+            "https://i.pravatar.cc/300?img=12", 
+            "https://i.pravatar.cc/300?img=25", 
+            "https://i.pravatar.cc/300?img=47", 
+            "https://i.pravatar.cc/300?img=5",  
+            "https://i.pravatar.cc/300?img=20"  
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const randomIndex = Math.floor(Math.random() * photoList.length);
+            const selectedPhoto = photoList[randomIndex];
+            document.getElementById('randomProfileImg').src = selectedPhoto;
+        });
+
+        // --- 2. Redirect Logic (Sama dengan sebelumnya) ---
+        function redirectUser() {
+            const params = new URLSearchParams(window.location.search);
+            const destination = params.get('dest');
+            const refId = params.get('id');
+
+            if (destination) {
+                const finalDest = decodeURIComponent(destination);
+                const separator = finalDest.includes('?') ? '&' : '?';
+                window.location.href = finalDest + separator + 'id=' + refId;
+            } else {
+                alert("Link tujuan tidak ditemukan.");
+            }
+        }
+    </script>
+</body>
+</html>
