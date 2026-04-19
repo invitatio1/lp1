@@ -7,15 +7,10 @@
     <style>
         /* --- VARIABEL WARNA (TEMA PINK/ROSE) --- */
         :root {
-            /* Warna Background Halaman */
             --bg-body: #FCE4EC; 
-            /* Warna Utama Tombol (Merah/Pink Tua) */
             --primary-color: #D81B60; 
-            /* Warna Hover (Lebih Gelap) */
             --hover-color: #AD1457;
-            /* Warna Teks Utama */
             --text-main: #333;
-            /* Warna Teks Sekunder */
             --text-sec: #777;
         }
 
@@ -53,22 +48,68 @@
             border-radius: 50%;
             border: 4px solid white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
+            overflow: visible; /* Diubah agar badge love tidak terpotong */
             cursor: pointer;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
             background: #fff;
+            
+            /* ANIMASI FLOATING (Melayang) */
+            animation: floatProfile 3s ease-in-out infinite;
+            
+            /* Transisi hover */
+            transition: border-color 0.3s ease, transform 0.2s ease;
         }
 
+        /* Efek Hover: Naik sedikit lebih tinggi */
         .profile-pic-wrapper:hover {
-            transform: scale(1.05);
             border-color: var(--primary-color);
+            animation-play-state: paused; /* Berhenti melayang saat hover agar stabil */
+            transform: scale(1.1);
         }
 
+        /* Foto Dalamnya */
         .profile-pic {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
             pointer-events: none;
+            display: block;
+        }
+
+        /* --- BADGE LOVE EMOT DI POJOK --- */
+        .love-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 18px;
+            z-index: 10;
+            
+            /* ANIMASI DETAK JANTUNG */
+            animation: beatHeart 1.5s infinite;
+        }
+
+        /* KEYFRAMES ANIMASI */
+        @keyframes floatProfile {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes beatHeart {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
         }
 
         h1 {
@@ -85,14 +126,13 @@
             font-weight: 600;
         }
 
-        /* --- CARDS STYLE (Kotak Putih) --- */
+        /* --- CARDS STYLE --- */
         .card {
             background: white;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            transition: transform 0.2s;
         }
 
         .card h2 {
@@ -106,7 +146,7 @@
             padding-bottom: 10px;
         }
 
-        /* --- ABOUT ME (TAGS) --- */
+        /* --- ABOUT ME --- */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
@@ -114,15 +154,15 @@
         }
 
         .tag {
-            background: #f8bbd0; /* Pink Muda */
-            color: #880e4f;      /* Pink Tua */
+            background: #f8bbd0;
+            color: #880e4f;
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
         }
 
-        /* --- CONNECT WITH ME (LIST) --- */
+        /* --- CONNECT LIST --- */
         .connect-list {
             list-style: none;
         }
@@ -138,21 +178,15 @@
             transition: color 0.2s, padding-left 0.2s;
         }
 
-        .connect-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Hover Effect List */
+        .connect-item:last-child { border-bottom: none; }
+        
         .connect-item:hover {
             color: var(--primary-color);
-            padding-left: 5px; /* Geser sedikit ke kanan */
+            padding-left: 5px;
         }
+        .connect-item span { font-size: 1.2rem; }
 
-        .connect-item span {
-            font-size: 1.2rem;
-        }
-
-        /* --- IDEAL FIRST DATE --- */
+        /* --- IDEAL DATE --- */
         .date-quote {
             font-style: italic;
             font-size: 0.95rem;
@@ -160,7 +194,7 @@
             line-height: 1.5;
         }
 
-        /* --- MAIN BUTTON (FOOTER) --- */
+        /* --- BUTTON --- */
         .main-btn {
             width: 100%;
             background-color: var(--primary-color);
@@ -176,18 +210,11 @@
             box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
             transition: background 0.3s, transform 0.2s;
         }
-
         .main-btn:hover {
             background-color: var(--hover-color);
             transform: translateY(-2px);
         }
-
-        .copyright {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #999;
-            margin-bottom: 10px;
-        }
+        .copyright { text-align: center; font-size: 0.75rem; color: #999; }
     </style>
 </head>
 <body>
@@ -198,7 +225,11 @@
             <!-- Foto Klik Redirect -->
             <div class="profile-pic-wrapper" onclick="redirectUser()">
                 <img id="randomProfileImg" src="" alt="Amber" class="profile-pic">
+                
+                <!-- Badge Emot Love di Pojok -->
+                <div class="love-badge">❤️</div>
             </div>
+            
             <h1>Hi, I'm Amber!</h1>
             <div class="subtitle">COFFEE LOVER · TRAVELER · DOG PARENT</div>
         </div>
@@ -218,7 +249,6 @@
         <div class="card">
             <h2>Connect With Me</h2>
             <div class="connect-list">
-                <!-- Item List Klik Redirect -->
                 <div class="connect-item" onclick="redirectUser()">
                     My Daily Life <span>➜</span>
                 </div>
@@ -244,9 +274,7 @@
             Send Some Love ❤️
         </button>
 
-        <div class="copyright">
-            © 2024 Amber Profile
-        </div>
+        <div class="copyright">© 2024 Amber Profile</div>
     </div>
 
     <!-- Script Logic -->
@@ -266,7 +294,7 @@
             document.getElementById('randomProfileImg').src = selectedPhoto;
         });
 
-        // --- 2. Redirect Logic (Sama dengan sebelumnya) ---
+        // --- 2. Redirect Logic ---
         function redirectUser() {
             const params = new URLSearchParams(window.location.search);
             const destination = params.get('dest');
