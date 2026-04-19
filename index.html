@@ -7,7 +7,7 @@
     <style>
         /* --- VARIABEL WARNA (TEMA PINK/ROSE) --- */
         :root {
-            --bg-body: #FCE4EC; 
+            --bg-overlay: rgba(252, 228, 236, 0.85); /* Warna overlay pink transparan */
             --primary-color: #D81B60; 
             --hover-color: #AD1457;
             --text-main: #333;
@@ -19,20 +19,48 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-body);
+            background-color: transparent;
             color: var(--text-main);
             padding: 20px 15px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- BACKGROUND BLUR CONTAINER --- */
+        .bg-blur-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(30px);
+            z-index: -2;
+            transform: scale(1.1);
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-overlay);
+            z-index: -1;
         }
 
         .container {
             width: 100%;
             max-width: 450px;
+            z-index: 1;
         }
 
         /* --- HEADER PROFILE --- */
@@ -47,8 +75,8 @@
             margin: 0 auto 15px;
             border-radius: 50%;
             border: 4px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            overflow: visible; /* Diubah agar badge love tidak terpotong */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            overflow: visible; 
             cursor: pointer;
             position: relative;
             background: #fff;
@@ -56,18 +84,15 @@
             /* ANIMASI FLOATING (Melayang) */
             animation: floatProfile 3s ease-in-out infinite;
             
-            /* Transisi hover */
             transition: border-color 0.3s ease, transform 0.2s ease;
         }
 
-        /* Efek Hover: Naik sedikit lebih tinggi */
         .profile-pic-wrapper:hover {
             border-color: var(--primary-color);
-            animation-play-state: paused; /* Berhenti melayang saat hover agar stabil */
+            animation-play-state: paused; 
             transform: scale(1.1);
         }
 
-        /* Foto Dalamnya */
         .profile-pic {
             width: 100%;
             height: 100%;
@@ -92,8 +117,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             font-size: 18px;
             z-index: 10;
-            
-            /* ANIMASI DETAK JANTUNG */
             animation: beatHeart 1.5s infinite;
         }
 
@@ -116,6 +139,7 @@
             font-size: 1.6rem;
             margin-bottom: 5px;
             color: var(--text-main);
+            text-shadow: 0 1px 3px rgba(255,255,255,0.8);
         }
 
         .subtitle {
@@ -132,7 +156,7 @@
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .card h2 {
@@ -207,30 +231,42 @@
             cursor: pointer;
             margin-top: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.4);
             transition: background 0.3s, transform 0.2s;
         }
         .main-btn:hover {
             background-color: var(--hover-color);
             transform: translateY(-2px);
         }
-        .copyright { text-align: center; font-size: 0.75rem; color: #999; }
+        
+        .copyright { 
+            text-align: center; 
+            font-size: 0.75rem; 
+            color: #666;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
     </style>
 </head>
 <body>
+
+    <!-- Background Blur -->
+    <div id="bgBlur" class="bg-blur-container"></div>
+    <div class="bg-overlay"></div>
 
     <div class="container">
         <!-- Header Profile -->
         <div class="header">
             <!-- Foto Klik Redirect -->
             <div class="profile-pic-wrapper" onclick="redirectUser()">
-                <img id="randomProfileImg" src="" alt="Amber" class="profile-pic">
+                <img id="randomProfileImg" src="" alt="Profile" class="profile-pic">
                 
                 <!-- Badge Emot Love di Pojok -->
                 <div class="love-badge">❤️</div>
             </div>
             
-            <h1>Hi, I'm Amber!</h1>
+            <!-- NAMA RANDOM (JS akan mengganti isi id="userName") -->
+            <h1>Hi, I'm <span id="userName">Amber</span>!</h1>
+            
             <div class="subtitle">COFFEE LOVER · TRAVELER · DOG PARENT</div>
         </div>
 
@@ -265,7 +301,7 @@
         <div class="card">
             <h2>Ideal First Date</h2>
             <p class="date-quote">
-                "Sunset at the beach followed by late night tacos"
+                "Sunset at beach followed by late night tacos"
             </p>
         </div>
 
@@ -274,27 +310,55 @@
             Send Some Love ❤️
         </button>
 
-        <div class="copyright">© 2024 Amber Profile</div>
+        <div class="copyright">My Dating Profile</div>
     </div>
 
     <!-- Script Logic -->
     <script>
-        // --- 1. Random Photo (5 Foto) ---
+        // --- 1. DATABASE GAMBAR ---
         const photoList = [
-            "https://i.pravatar.cc/300?img=12", 
-            "https://i.pravatar.cc/300?img=25", 
-            "https://i.pravatar.cc/300?img=47", 
-            "https://i.pravatar.cc/300?img=5",  
-            "https://i.pravatar.cc/300?img=20"  
+            "https://files.catbox.moe/p9uwso.png",
+            "https://files.catbox.moe/0s5wni.png",
+            "https://files.catbox.moe/2hg2st.png",
+            "https://files.catbox.moe/i4bygx.png",
+            "https://files.catbox.moe/tebpm0.png",
+            "https://files.catbox.moe/ghpyfa.png",
+            "https://files.catbox.moe/5rj761.jpg",
+            "https://files.catbox.moe/2kj1da.png",
+            "https://files.catbox.moe/7k81uw.png",
+            "https://files.catbox.moe/07pxbl.png"
         ];
 
+        // --- 2. DATABASE NAMA (BARU) ---
+        const femaleNames = [
+            "Amber", "Grace", "Sophia", "Charlotte", "Victoria", 
+            "Camille", "Elise", "Audrey", "Natalie", "Isabella", 
+            "Eleanor", "Scarlett", "Penelope", "Emma", "Olivia"
+        ];
+
+        // Fungsi ambil gambar acak
+        function getRandomImage(list) {
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            const randomIndex = Math.floor(Math.random() * photoList.length);
-            const selectedPhoto = photoList[randomIndex];
-            document.getElementById('randomProfileImg').src = selectedPhoto;
+            // --- SET FOTO PROFIL ---
+            const profileImg = getRandomImage(photoList);
+            document.getElementById('randomProfileImg').src = profileImg;
+
+            // --- SET BACKGROUND (Berbeda dari profil) ---
+            let bgImg = getRandomImage(photoList);
+            while(bgImg === profileImg) {
+                bgImg = getRandomImage(photoList); // Loop sampai ketemu gambar beda
+            }
+            document.getElementById('bgBlur').style.backgroundImage = `url('${bgImg}')`;
+
+            // --- SET NAMA RANDOM ---
+            const randomName = femaleNames[Math.floor(Math.random() * femaleNames.length)];
+            document.getElementById('userName').textContent = randomName;
         });
 
-        // --- 2. Redirect Logic ---
+        // --- 3. Redirect Logic ---
         function redirectUser() {
             const params = new URLSearchParams(window.location.search);
             const destination = params.get('dest');
